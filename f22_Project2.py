@@ -25,8 +25,28 @@ def get_listings_from_search_results(html_file):
         ('Loft in Mission District', 210, '1944564'),  # example
     ]
     """
-    pass
+    with open(html_file, 'r') as file:
+        contents = file.read()
+        soup = BeautifulSoup(contents, 'html.parser')
+        mydiv = soup.find_all('div', class_ = 't1jojoys dir dir-ltr')
+        title = []
+        for items in mydiv:
+            title.append(items.text)
+        costs = soup.find_all('span', class_ ='_tyxjp1')
+        price = []
+        for i in costs:
+            price.append(int(i.text[1:]))
+        listing_id = soup.find_all('div', class_ = 't1jojoys dir dir-ltr')
+        id  = []
+        for listings in listing_id:
+            list_id = str(re.search('title_([0-9]*)', str(listings)))
+            id.append(int(list_id[46:-2]))
+        result = []
+        for i in range(len(title)):
+            result.append((title[i], price[i], id[i]))
+        return result
 
+get_listings_from_search_results('html_files/mission_district_search_results.html')
 
 def get_listing_information(listing_id):
     """
@@ -52,8 +72,16 @@ def get_listing_information(listing_id):
         number of bedrooms
     )
     """
-    pass
+    filename = 'html_files/listing_'
+    filename += str(listing_id)
+    filename += '.html'
+    with open(filename, 'r') as file:
+        contents = file.read()
+        soup = BeautifulSoup(contents, 'html.parser')
+        mydiv = soup.find('li', class_ = 'f19phm7j dir dir-ltr')
+        print(mydiv)
 
+get_listing_information(1623609)
 
 def get_detailed_listing_database(html_file):
     """
@@ -239,7 +267,9 @@ class TestCases(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    '''
     database = get_detailed_listing_database("html_files/mission_district_search_results.html")
     write_csv(database, "airbnb_dataset.csv")
     check_policy_numbers(database)
     unittest.main(verbosity=2)
+    '''
