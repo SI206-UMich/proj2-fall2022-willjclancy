@@ -198,7 +198,6 @@ def check_policy_numbers(data):
             if len(num) > 1:
                 correct.append(num)
     result = []
-    temp = {}
     for row in data:
         if row[3] not in correct and row[3] != 'Pending' and row[3] != 'Exempt':
             result.append(row[2])
