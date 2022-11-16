@@ -100,7 +100,7 @@ def get_listing_information(listing_id):
             bedrooms = 1
         else:
             bedrooms = re.findall(r'\d+', bedrooms)
-            bedrooms = int(bedrooms[0])
+            bedrooms = int(bedrooms[1])
         all = soup.find('h2', class_ = '_14i3z6h').text
         typeroom = ''
         if 'Private' in all or 'private' in all:
